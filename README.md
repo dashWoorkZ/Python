@@ -1,3 +1,4 @@
+All Rights Reserved - Without Prejudice
 dashWoorkz Sovereign Society
 Managing Director: Dash: La Londe
 Software Program: TempCalc v.001
