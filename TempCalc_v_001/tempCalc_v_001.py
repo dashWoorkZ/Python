@@ -110,17 +110,20 @@ main_label.pack(side="top", fill="x", expand=True)
 global choice
 global temp
 
+c1 = (9/5) % 1
+
 def display_selected(choice):
         choice = scale.get()
         scale.set(choice)
+
     
 def setScaleTemp():
         choice = scale.get()
         temp = scaleTemp.get()
-        converted_scale_one_labelframe_label.configure(style="button.TLabel",text= round(int(temp) + 273.15, 2), width=5, anchor='center')
-        converted_scale_two_labelframe_label.configure(style="button.TLabel",text= round((int(temp) * (9/5)) + 32, 2), width=5, anchor='center')
-        converted_scale_three_labelframe_label.configure(style="button.TLabel",text= round(int(temp) + 491.67, 2), width=5, anchor='center')
-        converted_scale_four_labelframe_label.configure(style="button.TLabel",text= round(int(temp), 2), width=5, anchor='center')
+        converted_scale_one_labelframe_label.configure(style="button.TLabel",text= round(int(temp) + 273.15, 1), width=5, anchor='center')
+        converted_scale_two_labelframe_label.configure(style="button.TLabel",text= round((int(temp) * c1) + 32, 1), width=5, anchor='center')
+        converted_scale_three_labelframe_label.configure(style="button.TLabel",text= round(int(temp) + 491.67, 1), width=5, anchor='center')
+        converted_scale_four_labelframe_label.configure(style="button.TLabel",text= round(int(temp) * 1, 1), width=5, anchor='center')
 # Math note: Source of information regarding Rounding Numbers in Python : https://bobbyhadz.com/blog/python-round-float-3-decimal-places         
 # ++++++++++++++++++++++++++++++ 
 
@@ -269,7 +272,7 @@ converted_scale_three_labelframe_label.pack(fill='both', expand=True, side='bott
 # Converted Scale Celcius
 converted_scale_four_labelframe = ttk.Labelframe(master = converted_scales_frame)
 converted_scale_four_labelframe.configure(style="scales.TLabel",text="Celcius", width=5)
-converted_scale_four_labelframe.pack(fill='y', expand=True, side='top')
+converted_scale_four_labelframe.pack(fill='y', expand=True, side='bottom')
 
 converted_scale_four_labelframe_label = ttk.Label(converted_scale_four_labelframe)
 converted_scale_four_labelframe_label.configure(style="button.TLabel",text="", width=5, anchor='center')
