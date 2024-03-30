@@ -116,6 +116,10 @@ def display_selected(choice):
         choice = scale.get()
         scale.set(choice)
         scaleTemp.delete(0, END)
+        converted_scale_one_labelframe_label.configure(text="")
+        converted_scale_two_labelframe_label.configure(text="")
+        converted_scale_three_labelframe_label.configure(text="")
+        converted_scale_four_labelframe_label.configure(text="")
 
     
 def setScaleTemp():
