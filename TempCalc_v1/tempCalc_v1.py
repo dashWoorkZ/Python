@@ -23,6 +23,7 @@ import tkinter as tk
 from tkinter import ttk
 from PIL import ImageTk, Image
 
+
 #Main Window
 window = tk.Tk()
 window.title("dashWoorkZ - TempCalc v.001")
@@ -45,23 +46,6 @@ apps_menu.add_command(label = "Open  TempCalc", command = lambda: openTemp())
 apps_menu.add_command(label = "Close  TempCalc", command = lambda: hideTemp())
 apps_menu.add_command(label = "Exit", command = lambda: quit_main())
 menu.add_cascade(label = "Apps", menu = apps_menu)
-
-global choice
-global temp
-global current
-sct = ["Celcius", "Kelvin", "Fahrenheit", "Rankine"]
-
-# cel = sct[0]
-# kel = sct[1]
-# fah = sct[2]
-# ran = sct[3]
-                                                                                       
-         # The "Entry Value"
-#ss = scaleSet                  # The "Set Button"
-#sl = scalesList[i]                # The Selected Scale
-
-# scale = i
-
 
 # DWRX Logo Image used in Frame
 dwrx_logo = ImageTk.PhotoImage(Image.open("imgs/dwrx_logo_277.png"))
@@ -112,8 +96,8 @@ def hideTemp():
 
 main_frame = tk.Frame(master = window)
 main_frame.configure(background="#c9a7ed",
-        relief="ridge", width=300, height=350, highlightbackground='#a7edea',
-        highlightcolor='#c9a7ed', highlightthickness=10)
+relief="ridge", width=300, height=350, highlightbackground='#a7edea',
+highlightcolor='#c9a7ed', highlightthickness=10)
 main_frame.pack(side="top", expand=True)
 
 main_label = ttk.Label(master = main_frame)
@@ -123,20 +107,43 @@ main_label.pack(side="top", fill="x", expand=True)
 
 # =======  Scales Selection Frame
 
-def display_selected(scales):
-        scales = scale.get()
-        scale.set(scales)
-        temp = scaleTemp.get()
+global choice
+global temp
 
-def setScaleTemp(scales, temp):
-        scales = scaleSet[0].get()
-        temp = scaleSet[1].get()
-        
-            
-        # kelvin_labelframe_label.configure(style="button.TLabel",text= round(int(temp) + 273.15, 2), width=5, anchor='center')
-        # fahrenheit_labelframe_label.configure(style="button.TLabel",text= round((int(temp) * (9/5)) + 32, 2), width=5, anchor='center')
-        # rankine_labelframe_label.configure(style="button.TLabel",text= round(int(temp) + 491.67, 2), width=5, anchor='center')
-        # celcius_labelframe_label.configure(style="button.TLabel",text= round(int(temp), 2), width=5, anchor='center')
+c1 = (9/5) % 1
+
+def display_selected(choice):
+        choice = scale.get()
+        scale.set(choice)
+        scaleTemp.delete(0, END)
+
+    
+def setScaleTemp():
+        choice = scale.get()
+        temp = scaleTemp.get()
+        if choice == "Kelvin":
+                converted_scale_one_labelframe_label.configure(style="button.TLabel",text= round(int(temp) * 1, 1), width=5)
+                converted_scale_two_labelframe_label.configure(style="button.TLabel",text= round(((int(temp) - 273.15) * 1.8) + 32, 2), width=5, anchor='center')
+                converted_scale_three_labelframe_label.configure(style="button.TLabel",text= round(int(temp) + 491.67, 1), width=5, anchor='center')
+                converted_scale_four_labelframe_label.configure(style="button.TLabel",text= round(int(temp) - 273.15, 1), width=5, anchor='center')
+                
+        elif choice == "Fahrenheit":
+                converted_scale_one_labelframe_label.configure(style="button.TLabel",text= round(((int(temp) - 32) / 1.79999999) + 273.15, 2) , width=5)
+                converted_scale_two_labelframe_label.configure(style="button.TLabel",text= round(int(temp) * 1, 1), width=5, anchor='center')
+                converted_scale_three_labelframe_label.configure(style="button.TLabel",text= round(int(temp) + 459.67, 2) , width=5, anchor='center')
+                converted_scale_four_labelframe_label.configure(style="button.TLabel",text= round((int(temp) - 32) * (5/9), 2), width=5, anchor='center')
+
+        elif choice == "Rankine":
+                converted_scale_one_labelframe_label.configure(style="button.TLabel",text= round(((int(temp)- 491.67) / 1.79999999) + 273.15, 2), width=5)
+                converted_scale_two_labelframe_label.configure(style="button.TLabel",text= round(int(temp) - 459.67, 2), width=5, anchor='center')
+                converted_scale_three_labelframe_label.configure(style="button.TLabel",text= round(int(temp) * 1, 1)  , width=5, anchor='center')
+                converted_scale_four_labelframe_label.configure(style="button.TLabel",text= round((int(temp) - 491.67) / 1.79999999, 2), width=5, anchor='center')
+
+        elif choice == "Celcius":
+                converted_scale_one_labelframe_label.configure(style="button.TLabel",text= round(int(temp)  + 273.15, 2), width=5)
+                converted_scale_two_labelframe_label.configure(style="button.TLabel",text= round(int(temp)  * (9/5) + 32, 2), width=5, anchor='center')
+                converted_scale_three_labelframe_label.configure(style="button.TLabel",text= round((int(temp) * 1.8) + 459.67, 2) , width=5, anchor='center')
+                converted_scale_four_labelframe_label.configure(style="button.TLabel",text= round(int(temp) * 1, 2) , width=5, anchor='center')
 # Math note: Source of information regarding Rounding Numbers in Python : https://bobbyhadz.com/blog/python-round-float-3-decimal-places         
 # ++++++++++++++++++++++++++++++ 
 
@@ -184,19 +191,19 @@ temperature_setting_frame.configure(bg="#e0d5f2", cursor="umbrella",
         highlightcolor="#f5e856", takefocus=True, width=25)
 temperature_setting_frame.pack(side="top", fill="x", expand=True)
 
-scaleSet = tk.Button(master = temperature_setting_frame)
-scaleSet.configure(text="Set", cursor="umbrella", bg="#e0d5f2",
+scaleSet_button = tk.Button(master = temperature_setting_frame)
+scaleSet_button.configure(text="Set", cursor="umbrella", bg="#e0d5f2",
         highlightbackground="#f2c7b1", highlightcolor="#f5e856",      
         activebackground="#c8bff2", activeforeground="#8317bd", 
         justify=CENTER, width=3,fg="#138d96", takefocus=True,
         highlightthickness=0, command=setScaleTemp)
-scaleSet.pack(side="right", expand=True)
+scaleSet_button.pack(side="right", expand=True)
 
 # Scale Temperature Setting
 scaleTemp = tk.Entry(master = temperature_setting_frame)
 scaleTemp.config(cursor="umbrella", highlightbackground="#f2c7b1",
         highlightcolor="#f5e856", bg="#c8bff2", fg="#138d96",
-        takefocus=True, justify=CENTER, width=3, font=14,  textvariable=scaleTemp) 
+        takefocus=True, justify=CENTER, width=3, font=14) 
 scaleTemp.pack(side="right", expand=True)
 
 
@@ -205,7 +212,7 @@ scaleSet = ['Scale Setting','Celcius','Fahrenheit', 'Kelvin', 'Rankine']
 
 # setting variable for Integers and Strings
 scale = StringVar()
-scale.set(scaleSet[1])
+scale.set(scaleSet[0])
 
 scales = OptionMenu(
     temperature_setting_frame,
@@ -216,21 +223,11 @@ scales = OptionMenu(
 scales.config(activebackground="#c8bff2",
         activeforeground="#8317bd", anchor=CENTER, cursor="umbrella",
         direction="below", width=11, highlightbackground="#f2c7b1",
-        highlightcolor="#8317bd", highlightthickness=0, textvariable=scales,
+        highlightcolor="#8317bd", highlightthickness=0,
         indicatoron=1, takefocus=True, fg="#138d96")
     
 # positioning widget
-scales.pack(side="left", fill="x", expand=True)  
-
-
-
-sl = ["Celcius", "Kelvin", "Fahrenheit", "Rankine"]
-i = 0
-
-if  scale == sl[i] and sl[i] == sct[i]:
-    sl[scale].converted_scales_frame.pack(fill='y', expand=True, side='top')
-    current = sl[scale]
-    st = scaleTemp.get()
+scales.pack(side="left", fill="x", expand=True)         
 
 # ========== Temperature Setting Frame Complete
 
@@ -251,11 +248,12 @@ relief="ridge", width=15, highlightbackground='#a7edea',
 highlightcolor='#c9a7ed', highlightthickness=3)
 conversion_frame.pack(fill='both', expand=True)
 
-setTemp = IntVar()
+setTemp = StringVar()
 temp = 0
 
-def setTemp(setTemp):
-    scaletemp = round(setTemp)
+def setTemp(temp):
+    temp = round(setTemp)
+    print(setTemp)
        
 #Converted Scales Frame
 converted_scales_frame = tk.Frame(master = conversion_frame)
@@ -265,40 +263,40 @@ highlightcolor='#c9a7ed', highlightthickness=3)
 converted_scales_frame.pack(fill='both', expand=True, ipadx=3, ipady=5, side="bottom")
 
 # Converted Scale Kelvin
-kelvin_labelframe = ttk.Labelframe(master = converted_scales_frame)
-kelvin_labelframe.configure(style="scales.TLabel", text= sct[1], width=5)
-kelvin_labelframe.pack(fill='both', expand=True, side='left', padx=2)
+converted_scale_one_labelframe = ttk.Labelframe(master = converted_scales_frame)
+converted_scale_one_labelframe.configure(style="scales.TLabel", text="Kelvin", width=5)
+converted_scale_one_labelframe.pack(fill='both', expand=True, side='left', padx=2)
 
-kelvin_labelframe_label = ttk.Label(master = kelvin_labelframe)
-kelvin_labelframe_label.configure(temp, style="button.TLabel",text= sct[i][1], width=5, anchor='center')
-kelvin_labelframe_label.pack(fill='both', expand=True, side='bottom')
+converted_scale_one_labelframe_label = ttk.Label(master = converted_scale_one_labelframe)
+converted_scale_one_labelframe_label.configure(style="button.TLabel",text= "", width=5, anchor='center')
+converted_scale_one_labelframe_label.pack(fill='both', expand=True, side='bottom')
 
 # Converted Scale Fahrenheit
-fahrenheit_labelframe = ttk.Labelframe(master = converted_scales_frame)
-fahrenheit_labelframe.configure(scales, style="scales.TLabel", text= sct[2], width=5, textvariable=scales)
-fahrenheit_labelframe.pack(fill='both', expand=True, side='bottom', pady=3, padx=2)
+converted_scale_two_labelframe = ttk.Labelframe(master = converted_scales_frame)
+converted_scale_two_labelframe.configure(style="scales.TLabel", text="Fahrenheit", width=5)
+converted_scale_two_labelframe.pack(fill='both', expand=True, side='bottom', pady=3, padx=2)
 
-fahrenheit_labelframe_label = ttk.Label(fahrenheit_labelframe)
-fahrenheit_labelframe_label.configure(temp, style="button.TLabel",text= sct[i][2], width=5, anchor='center')
-fahrenheit_labelframe_label.pack(fill='both', expand=True, side='bottom')
+converted_scale_two_labelframe_label = ttk.Label(converted_scale_two_labelframe)
+converted_scale_two_labelframe_label.configure(style="button.TLabel",text="", width=5, anchor='center')
+converted_scale_two_labelframe_label.pack(fill='both', expand=True, side='bottom')
 
 # Converted Scale Rankine
-rankine_labelframe = ttk.Labelframe(master = converted_scales_frame)
-rankine_labelframe.configure(style="scales.TLabel", text= sct[3], width=5)
-rankine_labelframe.pack(fill='both', expand=True, side='right', padx=2)
+converted_scale_three_labelframe = ttk.Labelframe(master = converted_scales_frame)
+converted_scale_three_labelframe.configure(style="scales.TLabel", text="Rankine", width=5)
+converted_scale_three_labelframe.pack(fill='both', expand=True, side='right', padx=2)
 
-rankine_labelframe_label = ttk.Label(rankine_labelframe)
-rankine_labelframe_label.configure(style="button.TLabel",text= sct[i][3], width=5, anchor='center')
-rankine_labelframe_label.pack(fill='both', expand=True, side='bottom')
+converted_scale_three_labelframe_label = ttk.Label(converted_scale_three_labelframe)
+converted_scale_three_labelframe_label.configure(style="button.TLabel",text="", width=5, anchor='center')
+converted_scale_three_labelframe_label.pack(fill='both', expand=True, side='bottom')
 
 # Converted Scale Celcius
-celcius_labelframe = ttk.Labelframe(master = converted_scales_frame)
-celcius_labelframe.configure(style="scales.TLabel",text= sct[0], width=5)
-celcius_labelframe.pack(fill='y', expand=True, side='top')
+converted_scale_four_labelframe = ttk.Labelframe(master = converted_scales_frame)
+converted_scale_four_labelframe.configure(style="scales.TLabel",text="Celcius", width=5)
+converted_scale_four_labelframe.pack(fill='y', expand=True, side='bottom')
 
-celcius_labelframe_label = ttk.Label(celcius_labelframe)
-celcius_labelframe_label.configure(style="button.TLabel",text= sct[i][0], width=5, anchor='center')
-celcius_labelframe_label.pack(fill='both', expand=True, side='bottom')
+converted_scale_four_labelframe_label = ttk.Label(converted_scale_four_labelframe)
+converted_scale_four_labelframe_label.configure(style="button.TLabel",text="", width=5, anchor='center')
+converted_scale_four_labelframe_label.pack(fill='both', expand=True, side='bottom')
 
 # End of Scales Resonse
     
@@ -321,53 +319,6 @@ policy_frame_label.configure(style="footer.TLabel",
         anchor="center", justify="center")
 policy_frame_label.pack(side="bottom", fill="x", expand=True)
 
-
-# =================================================================
-# =================================================================
-# ==================== Additional Python Script ===================
-
-
- 
-
-
-if  scale == sl[i] and sl[i] == sct[i]:
-    sl[i].converted_scales_frame.pack(fill='y', expand=True, side='top')
-    current = sl[i]
-    st = scaleTemp.get()
-
-
-sct[0] = [             # Celcius Conversion Table
-            temp1(round(int(temp) * 1, 2)),                                    # Celcius
-            temp2(round(int(temp)  + 273.15, 2)),                                  # Celcius to Kelvin
-            temp3(round(int(temp)  * (9/5) + 32, 2)),                              # Celcius to Fahrenheit
-            temp4(round(int(temp)  + 491.67, 2))                                   # Celcius to Rankine
-        ]
-
-sct[1][              # Kelvin Conversion Table
-            temp1(round(int(temp) - 273.15, 2)),                               # Kelvin to Celcius
-            temp2(round(int(temp) * 1, 2)),                                    # Kelvin       
-            temp3(round(((int(temp) - 273.15) * 1.8) + 32, 2)),                # kelvin to Fahrenheit
-            temp4(round((int(temp) * 1.8) + 459.67, 2))                        # Kelvin to Rankine
-        ]
-
-sct[2][            # Fahrenheit Conversion Table
-            temp1(round((int(temp) - 32) * (5/9), 2)),                         # Fahrenheit to Celcius
-            temp2(round(((int(temp) - 32) / 1.79999999) + 273.15, 2)),         # Fahrenheit to Kelvin
-            temp3(round(int(temp) * 1, 2)),                                    # Fahrenheit       
-            temp4(round(int(temp) + 459.67, 2))                                # Fahrenheit to Rankine
-        ] 
-
-sct[3][              # Rankine Conversion Table
-            temp1(round((int(temp) - 491.67) / 1.79999999, 2)),                # Rankine to Celcius 
-            temp2(round(((int(temp)- 491.67) / 1.79999999) + 273.15, 2)),      # Rankine to Kelvin     
-            temp3(round(int(temp) - 459.67, 2)),                                # Rankine to Fahrenheit
-            temp4(round(int(temp) * 1, 2)),                                    # Rankine
-            
-        ]
-
-# =================================================================
-# =================================================================
-# ================== End Additional Python Script =================
 
 def quit_main():
     window.quit()
